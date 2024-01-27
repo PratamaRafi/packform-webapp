@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func ConnectDataBase() *gorm.DB {
+func ConnectDataBase() (*gorm.DB, error) {
 	username := utils.Getenv("DATABASE_USERNAME", "postgres")
 	password := utils.Getenv("DATABASE_PASSWORD", "1234")
 	host := utils.Getenv("DATABASE_HOST", "127.0.0.1")
@@ -28,5 +28,5 @@ func ConnectDataBase() *gorm.DB {
 		panic(err.Error())
 	}
 
-	return db
+	return db, err
 }

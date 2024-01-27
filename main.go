@@ -5,6 +5,7 @@ import (
 	"packform-webapp/config"
 	"packform-webapp/docs"
 	"packform-webapp/routes"
+	"packform-webapp/seed"
 	"packform-webapp/utils"
 
 	"github.com/joho/godotenv"
@@ -53,9 +54,34 @@ func main() {
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	// database connection
-	db := config.ConnectDataBase()
+	db, err := config.ConnectDataBase()
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
+
+	err = seed.SeedCustomer(db, "test_data/customers.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = seed.SeedCompanies(db, "test_data/customer_companies.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = seed.SeedDelivery(db, "test_data/deliveries.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = seed.SeedOrderItem(db, "test_data/order_items.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = seed.SeedOrder(db, "test_data/orders.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// router
 	r := routes.SetupRouter(db)
