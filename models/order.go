@@ -1,11 +1,12 @@
 package models
 
+import "time"
+
 type (
 	Orders struct {
-		ID       uint    `gorm:"primary_key" json:"order_item_id"`
-		OrderID  uint    `gorm:"foreign_key" json:"order_id"`
-		Price    float32 `gorm:"default:null" json:"price_per_unit"`
-		Quantity uint    `gorm:"not null" json:"quantity"`
-		Prouct   string  `gorm:"not null" json:"product"`
+		ID         uint      `gorm:"primary_key" json:"order_id"`
+		CreatedAt  time.Time `json:"created_at"`
+		OrderName  string    `gorm:"not null" json:"order_name"`
+		CustomerID string    `gorm:"foreign_key" json:"customer_id"`
 	}
 )

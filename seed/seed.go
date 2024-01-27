@@ -2,6 +2,7 @@ package seed
 
 import (
 	"encoding/csv"
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -130,17 +131,28 @@ func SeedOrderItem(db *gorm.DB, filePath string) error {
 	var items []models.OrderItem
 
 	for _, record := range records {
-		uintValue, err := strconv.ParseUint(record[0], 10, 64)
-		// convert string to time.Time format
-		time, err := time.Parse(time.RFC3339, record[1])
-		if err != nil {
+
+		if record[2] == "" {
 			continue
 		}
+
+		uintValue1, err1 := strconv.ParseUint(record[0], 10, 64)
+		uintValue2, err2 := strconv.ParseUint(record[1], 10, 64)
+		price, err := strconv.ParseFloat(record[2], 32)
+		uintValue3, err3 := strconv.ParseUint(record[3], 10, 64)
+
+		if err != nil || err1 != nil || err2 != nil || err3 != nil {
+			fmt.Printf("Error parsing price value: %v\n", err1, err2, err3)
+			continue
+		}
+
 		item := models.OrderItem{
-			ID:         uint(uintValue),
-			CreatedAt:  time,
-			OrderName:  record[2],
-			CustomerID: record[3],
+
+			ID:       uint(uintValue1),
+			OrderID:  uint(uintValue2),
+			Price:    float32(price),
+			Quantity: uint(uintValue3),
+			Prouct:   record[4],
 		}
 		items = append(items, item)
 	}
@@ -164,20 +176,18 @@ func SeedOrder(db *gorm.DB, filePath string) error {
 	var orders []models.Orders
 
 	for _, record := range records {
-		uintValue1, err1 := strconv.ParseUint(record[0], 10, 64)
-		uintValue2, err2 := strconv.ParseUint(record[1], 10, 64)
-		price, err := strconv.ParseFloat(record[2], 32)
-		uintValue3, err3 := strconv.ParseUint(record[3], 10, 64)
-
-		if err != nil || err1 != nil || err2 != nil || err3 != nil {
+		uintValue, err1 := strconv.ParseUint(record[0], 10, 64)
+		// convert string to time.Time format
+		time, err2 := time.Parse(time.RFC3339, record[1])
+		if err1 != nil || err2 != nil {
 			continue
 		}
+
 		order := models.Orders{
-			ID:       uint(uintValue1),
-			OrderID:  uint(uintValue2),
-			Price:    float32(price),
-			Quantity: uint(uintValue3),
-			Prouct:   record[4],
+			ID:         uint(uintValue),
+			CreatedAt:  time,
+			OrderName:  record[2],
+			CustomerID: record[3],
 		}
 		orders = append(orders, order)
 	}
