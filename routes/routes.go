@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	// "packform-webapp/controllers"
+	"packform-webapp/controllers"
 
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
@@ -28,9 +28,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		c.Set("db", db)
 	})
 
+	orderController := controllers.NewOrderController(db)
+
 	// ORDER API
-	// r.GET("/order", controllers.GetAllTask)
-	// r.GET("order/:customer_id", controllers.GetTaskByCustomerId)
+	r.GET("/order", orderController.GetAllOrderDetailsHandler)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
