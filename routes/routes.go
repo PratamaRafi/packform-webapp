@@ -16,7 +16,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	// CORS middleware configuration
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:8080"} //local for staging domain
+	config.AllowOrigins = []string{"https://4pt4n6d6-8080.asse.devtunnels.ms/", "http://localhost:8081"} //local for staging domain
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
 	config.AllowHeaders = []string{"Content-Type"}
 
