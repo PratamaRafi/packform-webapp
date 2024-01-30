@@ -1,6 +1,6 @@
 # Server-side packform
 
-A brief description of your Vue.js project.
+A brief description of your Go project.
 
 ## Installation
 
