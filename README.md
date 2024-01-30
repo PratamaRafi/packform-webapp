@@ -24,6 +24,7 @@ A brief description of your Go project.
     ```bash
    cd config 
    ```
+    ``` bash
     username := utils.Getenv("DATABASE_USERNAME", "username")
 	password := utils.Getenv("DATABASE_PASSWORD", "password")
 	host := utils.Getenv("DATABASE_HOST", "127.0.0.1")
